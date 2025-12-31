@@ -4,10 +4,10 @@
 {% block dashboard_title %}View Students{% endblock %}
 
 {% block sidebar_menu %}
-<ul>
-    <li><a href="{% url 'viewcourses' %}"><i class="ri-book-open-line"></i> View Courses</a></li>
-    <li><a href="{% url 'viewstudents' %}" class="active"><i class="ri-group-line"></i> View Students</a></li>
-    <li><a href="#"><i class="ri-bar-chart-fill"></i> View Result</a></li>
+<ul class="space-y-2">
+    <li><a href="{% url 'viewcourses' %}" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i class="ri-book-open-line"></i> View Courses</a></li>
+    <li><a href="{% url 'viewstudents' %}" class="flex items-center gap-2 p-2 bg-gray-200 text-gray-900 rounded-md"><i class="ri-group-line"></i> View Students</a></li>
+    <li><a href="#" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i class="ri-bar-chart-fill"></i> View Result</a></li>
 </ul>
 {% endblock %}
 
@@ -15,61 +15,123 @@
 <style>
 .content-wrapper {
     padding: 20px;
+    background: #ffffff;
 }
 
-.semester-section {
-    margin-bottom: 30px;
+.search-bar {
+    margin-bottom: 20px;
 }
 
-.semester-title {
-    margin-bottom: 15px;
-    font-size: 20px;
-    font-weight: 600;
+.search-input {
+    width: 300px;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
 }
 
-.student-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+.search-button {
+    padding: 8px 12px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-.student-card {
-    background: #fff;
-    padding: 15px;
+.search-button:hover {
+    background-color: #2563eb;
+}
+
+.table-container {
+    overflow-x: auto;
     border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.student-card img {
-    width: 90px;
-    height: 90px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+    background-color: #f3f4f6;
+    color: #111827;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+}
+
+tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+tr:hover {
+    background-color: #f1f5f9;
+}
+
+.student-img {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
+    border: 2px solid #d1d5db;
+}
+
+.semester-badge {
+    background-color: #e5e7eb;
+    color: #111827;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
 }
 </style>
 {% endblock extra_css %}
 
 {% block content %}
-
 <div class="content-wrapper">
-    <h2>Students by Semester</h2>
+    <h2 class="text-2xl font-bold mb-4 text-gray-900">Students List</h2>
 
-    <!-- Semester 1 -->
-    <div class="semester-section">
-        <div class="semester-title">Semester 1</div>
-        <div class="student-grid">
-            {% for s in students %}
-            <div class="student-card">
-                <img src="{{s.user.profile_pic.profile_image.url}}" alt="Student">
-                <h3>{{s.user.first_name}} {{s.user.last_name}}</h3>
-                <p>{{s.user.email}}</p>
-            </div>
-            {% endfor %}
-        </div>
+    <!-- Search Bar -->
+    <form method="get" class="search-bar">
+        <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Search by name..." class="search-input">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Profile</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Semester</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td><img src="{{ s.user.profile_pic.profile_image.url }}" class="student-img" alt="Student"></td>
+                    <td>{{ s.user.first_name }} {{ s.user.last_name }}</td>
+                    <td>{{ s.user.email }}</td>
+                    <td><span class="semester-badge">Semester {{ s.user.student.semester }}</span></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-4 text-gray-500">No students found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-
 </div>
 {% endblock %}

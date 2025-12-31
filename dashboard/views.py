@@ -54,7 +54,12 @@ def ViewTeachers(request):
 
 
 def ViewStudents(request):
-    students=Student.objects.select_related('user','user__profile_pic')
+    student_name=request.GET.get("q")
+    if student_name:
+        students=Student.objects.filter(user__username__icontains=student_name)
+    else:
+    #   students=Student.objects.select_related('user','user__profile_pic')
+      students=Student.objects.all()
   
     return render(request,"features/viewstudents.html",{
         "students":students
