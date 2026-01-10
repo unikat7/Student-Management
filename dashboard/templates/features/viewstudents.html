@@ -1,15 +1,9 @@
-{% extends "dashboard/basedashboard.html" %}
+{% extends "dashboard/teacherbase.html" %}
 {% load static %}
 
 {% block dashboard_title %}View Students{% endblock %}
 
-{% block sidebar_menu %}
-<ul class="space-y-2">
-    <li><a href="{% url 'viewcourses' %}" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i class="ri-book-open-line"></i> View Courses</a></li>
-    <li><a href="{% url 'viewstudents' %}" class="flex items-center gap-2 p-2 bg-gray-200 text-gray-900 rounded-md"><i class="ri-group-line"></i> View Students</a></li>
-    <li><a href="#" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md"><i class="ri-bar-chart-fill"></i> View Result</a></li>
-</ul>
-{% endblock %}
+
 
 {% block extra_css %}
 <style>

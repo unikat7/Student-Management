@@ -9,5 +9,6 @@ urlpatterns = [
     #features url
     path('viewcourses/',ViewCourses,name='viewcourses'),
     path('viewteachers/',ViewTeachers,name="viewteachers"),
-    path('viewstudents/',ViewStudents,name="viewstudents")
+    path('viewstudents/',ViewStudents,name="viewstudents"),
+    path('assignmarks/',AssignMarks,name='assignmarks')
 ]

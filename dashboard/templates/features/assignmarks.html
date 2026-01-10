@@ -1,0 +1,32 @@
+{% extends "dashboard/teacherbase.html" %}
+
+{% block content %}
+
+<h2>Assign Marks</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Student</label><br>
+    <select name="student" required>
+        <option value="">Select Student</option>
+        {% for s in students %}
+            <option value="{{ s.id }}">{{ s.username }} (Sem {{ s.semester }})</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Course</label><br>
+    <select name="course" required>
+        <option value="">Select Course</option>
+        {% for c in courses %}
+            <option value="{{ c.id }}">{{ c.course_name }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Marks</label><br>
+    <input type="number" name="marks" min="0" max="100" required><br><br>
+
+    <button type="submit">Assign Marks</button>
+</form>
+
+{% endblock %}

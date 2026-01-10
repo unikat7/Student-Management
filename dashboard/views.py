@@ -65,4 +65,35 @@ def ViewStudents(request):
         "students":students
     })
 
-    
+
+
+def AssignMarks(request):
+    teacher = Teacher.objects.get(user=request.user)
+
+    students = Student.objects.all()
+    courses = Courses.objects.all()
+
+    if request.method == "POST":
+        student_id = request.POST.get('student')
+        course_id = request.POST.get('course')
+        marks = request.POST.get('marks')
+
+        student = Student.objects.get(id=student_id)
+        course = Courses.objects.get(id=course_id)
+
+        # update if already exists, else create
+        Marks.objects.update_or_create(
+            student=student,
+            course=course,
+            defaults={
+                'teacher': teacher,
+                'marks': marks
+            }
+        )
+
+        return redirect('assignmarks')
+
+    return render(request, 'features/assignmarks.html', {
+        'students': students,
+        'courses': courses
+    })
