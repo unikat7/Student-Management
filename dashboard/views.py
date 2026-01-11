@@ -15,8 +15,7 @@ import pickle
 # Create your views here.
 
 
-
-ML_FOLDER = os.path.join(settings.BASE_DIR, 'dashboard', 'ml_model')
+ML_FOLDER = os.path.join(settings.BASE_DIR, 'dashboard', 'templates', 'dashboard', 'ml_model')
 model_path = os.path.join(ML_FOLDER, 'tech_path_model.pkl')
 columns_path = os.path.join(ML_FOLDER, 'train_columns.pkl')
 
