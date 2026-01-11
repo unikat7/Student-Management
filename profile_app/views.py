@@ -3,6 +3,10 @@ from .models import Student,Teacher,Profile
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 # Create your views here.
 def StudentRegistration(request):
@@ -92,3 +96,20 @@ def ProfileUpdate(request):
 def Logout(request):
     logout(request)
     return  redirect('signin')
+
+
+
+@login_required(login_url='signin')
+def ChangePassword(request):
+    form=PasswordChangeForm(user=request.user)
+    if request.method=="POST":
+        data=request.POST
+        form=PasswordChangeForm(user=request.user,data=data)
+        if form.is_valid():
+            user=form.save()
+            update_session_auth_hash(request,user)
+            return HttpResponse("hello")
+    return render(request,"updation/changepassword.html",{
+        "form":form
+    })
+

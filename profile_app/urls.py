@@ -10,8 +10,11 @@ urlpatterns = [
 
 
    #signout
+   path("logout/",Logout,name="logout"),
 
 
-   path("logout/",Logout,name="logout")
+   #passwordchange
+   path("passchange/",ChangePassword,name="passwordchange")
+
 
 ]

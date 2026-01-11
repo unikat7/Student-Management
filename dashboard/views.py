@@ -4,9 +4,30 @@ from django.core.paginator import Paginator
 from .models import Courses,Semester
 from profile_app.models import Teacher,Student
 from django.contrib.auth.models import User
-
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+import os
+import pandas as pd
+import joblib
+from django.conf import settings
+import pickle
 # Create your views here.
 
+
+
+ML_FOLDER = os.path.join(settings.BASE_DIR, 'dashboard', 'ml_model')
+model_path = os.path.join(ML_FOLDER, 'tech_path_model.pkl')
+columns_path = os.path.join(ML_FOLDER, 'train_columns.pkl')
+
+
+
+# Load model
+model = joblib.load(model_path)
+
+# Load training columns
+with open(columns_path, 'rb') as f:
+    train_columns = pickle.load(f)
 
 
 @login_required(login_url='signin')
@@ -97,3 +118,35 @@ def AssignMarks(request):
         'students': students,
         'courses': courses
     })
+
+def TechForm(request):
+    prediction = None
+
+    if request.method == 'POST':
+        data = request.POST
+        user_input = {
+            'prefer_design_or_logic': data['prefer_design_or_logic'],
+            'like_coding': data['like_coding'],
+            'enjoy_math': data['enjoy_math'],
+            'like_puzzles': data['like_puzzles'],
+            'build_apps_or_websites': data['build_apps_or_websites']
+        }
+
+        # Convert to DataFrame
+        user_df = pd.DataFrame([user_input])
+
+        # One-hot encode
+        user_df = pd.get_dummies(user_df)
+
+        # Add missing columns
+        for col in train_columns:
+            if col not in user_df.columns:
+                user_df[col] = 0
+
+        # Ensure order
+        user_df = user_df[train_columns]
+
+        # Predict
+        prediction = model.predict(user_df)[0]
+
+    return render(request, "features/techform.html", {"prediction": prediction})
