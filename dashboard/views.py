@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Courses,Semester
@@ -87,36 +87,40 @@ def ViewStudents(request):
 
 
 
+@login_required
 def AssignMarks(request):
-    teacher = Teacher.objects.get(user=request.user)
+    teacher = Teacher.objects.filter(user=request.user).first()
 
-    students = Student.objects.all()
+    if not teacher:
+        return redirect("teacherdashboard")  # or show error message
+
+
     courses = Courses.objects.all()
+    students = Student.objects.all()
 
     if request.method == "POST":
-        student_id = request.POST.get('student')
-        course_id = request.POST.get('course')
-        marks = request.POST.get('marks')
+        student_id = request.POST.get("student")
+        course_id = request.POST.get("course")
+        marks_value = request.POST.get("marks")
 
         student = Student.objects.get(id=student_id)
         course = Courses.objects.get(id=course_id)
 
-        # update if already exists, else create
+        # Prevent duplicate marks
         Marks.objects.update_or_create(
             student=student,
             course=course,
-            defaults={
-                'teacher': teacher,
-                'marks': marks
-            }
+            teacher=teacher,
+            defaults={'marks': marks_value}
         )
 
-        return redirect('assignmarks')
+        return redirect("assignmarks")
 
-    return render(request, 'features/assignmarks.html', {
-        'students': students,
-        'courses': courses
-    })
+    context = {
+        "students": students,
+        "courses": courses
+    }
+    return render(request, "features/assignmarks.html", context)
 
 def TechForm(request):
     prediction = None
