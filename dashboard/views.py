@@ -182,3 +182,34 @@ def TechForm(request):
         prediction = model.predict(user_df)[0]
 
     return render(request, "features/techform.html", {"prediction": prediction})
+
+
+@login_required
+def ViewResults(request):
+    student = Student.objects.get(user=request.user)
+    marks = Marks.objects.filter(student=student)
+    courses = Courses.objects.filter(semester=student.semester)
+
+    course_marks_list = []
+    completed = 0
+
+    for c in courses:
+        m = marks.filter(course=c).first()
+        if m:
+            course_marks_list.append({'course_name': c.course_name, 'marks': m.marks, 'assigned': True})
+            completed += 1
+        else:
+            course_marks_list.append({'course_name': c.course_name, 'marks': 0, 'assigned': False})
+
+    total = courses.count()
+    pending = total - completed
+    progress_percent = int((completed / total) * 100) if total > 0 else 0
+
+    return render(request, 'features/viewmarks.html', {
+        'student': student,
+        'course_marks_list': course_marks_list,
+        'total_courses': total,
+        'completed_courses': completed,
+        'pending_courses': pending,
+        'progress_percent': progress_percent,
+    })

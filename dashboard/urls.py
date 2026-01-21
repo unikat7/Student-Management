@@ -11,7 +11,7 @@ urlpatterns = [
     path('viewteachers/',ViewTeachers,name="viewteachers"),
     path('viewstudents/',ViewStudents,name="viewstudents"),
     path('assignmarks/',AssignMarks,name='assignmarks'),
-    
+    path('viewmarks/',ViewResults,name='viewmarks'),
 
     #model
     path('techform/',TechForm,name='techform')
