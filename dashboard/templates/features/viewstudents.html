@@ -117,7 +117,7 @@ tr:hover {
                     <td><img src="{{ s.user.profile_pic.profile_image.url }}" class="student-img" alt="Student"></td>
                     <td>{{ s.user.first_name }} {{ s.user.last_name }}</td>
                     <td>{{ s.user.email }}</td>
-                    <td><span class="semester-badge">Semester {{ s.user.student.semester }}</span></td>
+                    <td><span class="semester-badge">{{ s.semester.semester }}</span></td>
                 </tr>
                 {% empty %}
                 <tr>

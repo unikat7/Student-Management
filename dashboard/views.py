@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import Courses,Semester
-from profile_app.models import Teacher,Student
+from profile_app.models import Teacher,Student,Marks
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
@@ -12,6 +12,10 @@ import pandas as pd
 import joblib
 from django.conf import settings
 import pickle
+from django.http import HttpResponse
+from django.db.models import Prefetch
+from django.contrib import messages
+
 # Create your views here.
 
 
@@ -89,38 +93,63 @@ def ViewStudents(request):
 
 @login_required
 def AssignMarks(request):
-    teacher = Teacher.objects.filter(user=request.user).first()
+    teacher = Teacher.objects.get(user=request.user)
 
-    if not teacher:
-        return redirect("teacherdashboard")  # or show error message
+    # Courses assigned to this teacher
+    courses = Courses.objects.filter(teacher=teacher)
 
+    selected_course_id = request.GET.get('course')
+    students = None
+    selected_course = None
 
-    courses = Courses.objects.all()
-    students = Student.objects.all()
+    # ---------- GET: Load students + existing marks ----------
+    if selected_course_id:
+        selected_course = Courses.objects.get(id=selected_course_id)
 
-    if request.method == "POST":
-        student_id = request.POST.get("student")
-        course_id = request.POST.get("course")
-        marks_value = request.POST.get("marks")
-
-        student = Student.objects.get(id=student_id)
-        course = Courses.objects.get(id=course_id)
-
-        # Prevent duplicate marks
-        Marks.objects.update_or_create(
-            student=student,
-            course=course,
-            teacher=teacher,
-            defaults={'marks': marks_value}
+        # Prefetch existing marks for this course & teacher
+        students = Student.objects.filter(
+            semester=selected_course.semester
+        ).prefetch_related(
+            Prefetch(
+                'marks_set',
+                queryset=Marks.objects.filter(course=selected_course, teacher=teacher),
+                to_attr='course_marks'
+            )
         )
 
-        return redirect("assignmarks")
+    # ---------- POST: Insert or Update marks ----------
+    if request.method == "POST":
+        course_id = request.POST.get('course')
+        student_ids = request.POST.getlist('student_id')
+        marks_list = request.POST.getlist('marks')
 
-    context = {
-        "students": students,
-        "courses": courses
-    }
-    return render(request, "features/assignmarks.html", context)
+        course = Courses.objects.get(id=course_id)
+
+        for i, student_id in enumerate(student_ids):
+            student = Student.objects.get(id=student_id)
+
+            Marks.objects.update_or_create(
+                student=student,
+                course=course,
+                teacher=teacher,
+                defaults={
+                    'marks': marks_list[i],
+                    'semester': student.semester
+                }
+            )
+
+        # Add success message
+        messages.success(request, "Marks assigned / updated successfully!")
+
+        # Redirect to avoid resubmission on refresh
+        return redirect(f"{request.path}?course={course_id}")
+
+    return render(request, 'features/assignmarks.html', {
+        'courses': courses,
+        'students': students,
+        'selected_course': selected_course
+    })
+
 
 def TechForm(request):
     prediction = None

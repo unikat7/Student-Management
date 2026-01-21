@@ -4,4 +4,4 @@ from .models import *
 
 
 
-admin.site.register([Profile,Semester,Teacher,Marks,Student])
+admin.site.register([Profile,Teacher,Marks,Student])

@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Student,Teacher,Profile
+from dashboard.models import Semester
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
@@ -9,20 +10,46 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 # Create your views here.
+
 def StudentRegistration(request):
-    if request.method=="POST":
-        data=request.POST
-        username=data["username"]
-        firstname=data["firstname"]
-        lastname=data["lastname"]
-        semester=data["semester"]
-        password=data["password"]
-        email=data["email"]
-        user=User.objects.create_user(username=username,first_name=firstname,last_name=lastname,password=password,email=email)
-     
-        st=Student.objects.create(user=user,semester=semester)
-       
-    return render(request,"registration/student.html")
+    semesters = Semester.objects.all()
+
+    if request.method == "POST":
+        username = request.POST.get("username")
+        firstname = request.POST.get("firstname")
+        lastname = request.POST.get("lastname")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        semester_id = request.POST.get("semester")
+
+        # Create User
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+            first_name=firstname,
+            last_name=lastname
+        )
+
+        # Get Semester object
+        semester = Semester.objects.get(id=semester_id)
+
+        # Create Student
+        Student.objects.create(
+            username=username,
+            firstname=firstname,
+            lastname=lastname,
+            email=email,
+            user=user,
+            semester=semester
+        )
+
+        return redirect("signin")
+
+    return render(request, "registration/student.html", {
+        "semesters": semesters
+    })
+
 
 def TeacherRegistration(request):
     if request.method=="POST":
@@ -37,6 +64,7 @@ def TeacherRegistration(request):
         user=User.objects.create_user(username=username,first_name=firstname,last_name=lastname,password=password,email=email)
         st=Teacher.objects.create(user=user)
         st.save()
+        return redirect("signin")
 
     return render(request,"registration/teacher.html")
 
