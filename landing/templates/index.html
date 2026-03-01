@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +15,10 @@
         }
 
         body {
-            background: linear-gradient(135deg, #4e73df, #1cc88a);
+            height: 100vh;
+            background: 
+                linear-gradient(rgba(0,70,184,0.6), rgba(0,70,184,0.6)),
+                url("{% static 'images/college-bg.jpg' %}") no-repeat center center/cover;
             color: white;
         }
 
@@ -24,31 +28,33 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 60px;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0,70,184,0.85);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
 
-        .logo {
+        .logo-text {
             font-size: 22px;
             font-weight: bold;
+            color: #ffffff;
         }
 
         .login-btn {
-            padding: 8px 20px;
+            padding: 8px 22px;
             border-radius: 25px;
-            background: white;
-            color: #4e73df;
+            background: #ffffff;
+            color: #0046b8;
             font-weight: 600;
             text-decoration: none;
             transition: 0.3s ease;
         }
 
         .login-btn:hover {
-            background: #f8f9fc;
+            background: #e6f0ff;
         }
 
         /* Hero Section */
         .hero {
-            height: 90vh;
+            height: 85vh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -60,30 +66,46 @@
             max-width: 700px;
         }
 
+        .college-logo {
+            margin-bottom: 25px;
+        }
+
+        .college-logo img {
+            width: 130px;
+            height: 130px;
+            object-fit: contain;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
         .hero h1 {
-            font-size: 45px;
-            margin-bottom: 20px;
+            font-size: 46px;
+            margin-bottom: 15px;
+            color: #ffffff;
         }
 
         .hero p {
             font-size: 18px;
             margin-bottom: 30px;
             line-height: 1.6;
+            color: #d9e6ff;
         }
 
-        .hero .cta-btn {
+        .cta-btn {
             display: inline-block;
-            padding: 12px 30px;
-            background: white;
-            color: #4e73df;
+            padding: 14px 32px;
+            background: #0046b8;
+            color: #ffffff;
             border-radius: 30px;
             font-weight: bold;
             text-decoration: none;
             transition: 0.3s ease;
         }
 
-        .hero .cta-btn:hover {
-            background: #f8f9fc;
+        .cta-btn:hover {
+            background: #0066ff;
         }
 
         /* Responsive */
@@ -95,6 +117,11 @@
             .hero h1 {
                 font-size: 32px;
             }
+
+            .college-logo img {
+                width: 100px;
+                height: 100px;
+            }
         }
     </style>
 </head>
@@ -102,19 +129,27 @@
 
     <!-- Navbar -->
     <div class="navbar">
-        <div class="logo">Student Management System</div>
+        <div class="logo-text">Student Management System</div>
         <a href="{% url 'signin' %}" class="login-btn">SMS Login</a>
     </div>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <h1>Welcome to Student Management System</h1>
+
+            <!-- College Logo -->
+            <div class="college-logo">
+                <img src="{% static 'images/gplogo.png' %}" alt="College Logo">
+            </div>
+
+            <h1>Welcome to GP College SMS Portal</h1>
             <p>
                 Manage students, attendance, results, and academic records efficiently.
-                A simple and smart solution for modern educational institutions.
+               
             </p>
+
             <a href="{% url 'signin' %}" class="cta-btn">Access SMS</a>
+
         </div>
     </section>
 
