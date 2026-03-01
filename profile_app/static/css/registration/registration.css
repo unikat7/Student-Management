@@ -7,11 +7,12 @@
 }
 
 body {
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
+   
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(135deg, #7c77bc, #6bb56d);
 }
 
 /* Main card container */
