@@ -90,7 +90,7 @@ def SignIn(request):
             login(request,user)
             return redirect('teacherdashboard')
         else:
-            return redirect("choice")
+            return redirect("signin")
     return render(request,"signin/login.html")
 
 
