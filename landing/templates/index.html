@@ -3,155 +3,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Management System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        body {
-            height: 100vh;
-            background: 
-                linear-gradient(rgba(0,70,184,0.6), rgba(0,70,184,0.6)),
-                url("{% static 'images/college-bg.jpg' %}") no-repeat center center/cover;
-            color: white;
-        }
-
-        /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 60px;
-            background: rgba(0,70,184,0.85);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .login-btn {
-            padding: 8px 22px;
-            border-radius: 25px;
-            background: #ffffff;
-            color: #0046b8;
-            font-weight: 600;
-            text-decoration: none;
-            transition: 0.3s ease;
-        }
-
-        .login-btn:hover {
-            background: #e6f0ff;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 85vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .hero-content {
-            max-width: 700px;
-        }
-
-        .college-logo {
-            margin-bottom: 25px;
-        }
-
-        .college-logo img {
-            width: 130px;
-            height: 130px;
-            object-fit: contain;
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 50%;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        .hero h1 {
-            font-size: 46px;
-            margin-bottom: 15px;
-            color: #ffffff;
-        }
-
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            color: #d9e6ff;
-        }
-
-        .cta-btn {
-            display: inline-block;
-            padding: 14px 32px;
-            background: #0046b8;
-            color: #ffffff;
-            border-radius: 30px;
-            font-weight: bold;
-            text-decoration: none;
-            transition: 0.3s ease;
-        }
-
-        .cta-btn:hover {
-            background: #0066ff;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 15px 20px;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .college-logo img {
-                width: 100px;
-                height: 100px;
-            }
-        }
-    </style>
+    <title>GP Koirala Memorial College - Student Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="h-screen w-screen font-sans">
 
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="logo-text">Student Management System</div>
-        <a href="{% url 'signin' %}" class="login-btn">SMS Login</a>
-    </div>
+    <!-- Background Image -->
+    <div class="relative h-screen w-screen">
+        <img src="https://lh3.googleusercontent.com/gps-cs-s/AHVAwerhXSIvdL2ZiJKpFdVRvFUuXpWxfVfE1YIA-Cyx9inPWCGkTuPOwwM6SUOYQDICG3H-qRrjxP7YJb6Jd9TunJHUbV6__aHE2nQUH2O96M0wdtrxjA0U7XK8bFgbqlCIJirCibwtPA=s1360-w1360-h1020-rw" 
+             alt="GP Koirala Memorial College" 
+             class="absolute inset-0 w-full h-full object-cover">
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-20 flex flex-col justify-center items-center text-center px-4">
 
-            <!-- College Logo -->
-            <div class="college-logo">
-                <img src="{% static 'images/gplogo.png' %}" alt="College Logo">
-            </div>
-
-            <h1>Welcome to GP College SMS Portal</h1>
-            <p>
-                Manage students, attendance, results, and academic records efficiently.
-               
+            <!-- College Name -->
+            <h1 class="text-white text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-2xl">
+                GP Koirala Memorial College
+            </h1>
+            <p class="text-gray-100 text-lg md:text-2xl mb-8 drop-shadow-lg">
+                Student Management System
             </p>
 
-            <a href="{% url 'signin' %}" class="cta-btn">Access SMS</a>
-
+            <!-- Buttons -->
+            <div class="flex flex-col md:flex-row gap-6">
+                <a href="{% url 'signin' %}" 
+                   class="px-10 py-4 bg-gradient-to-r from-green-400 to-green-600 
+                          hover:from-green-500 hover:to-green-700 text-white rounded-full 
+                          text-lg font-bold shadow-xl transform hover:scale-105 transition duration-300">
+                    EMS Login
+                </a>
+             
+            </div>
         </div>
-    </section>
+    </div>
 
 </body>
 </html>
