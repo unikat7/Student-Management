@@ -6,11 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management System | Login</title>
     <link rel="stylesheet" href="{% static 'css/signin/login.css' %}">
+    <style>
+        .alert {
+            background-color: #ffe0e0;
+            color: #c0392b;
+            border: 1px solid #e74c3c;
+            border-left: 4px solid #e74c3c;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            transition: opacity 0.5s ease;
+        }
+    </style>
 </head>
 <body>
 
     <div class="login-container">
+
         <div class="login-box">
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}" id="alert-message">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
 
             <!-- School Logo -->
             <div class="logo">
@@ -50,6 +72,16 @@
 
         </div>
     </div>
+
+    <script>
+        const alertMsg = document.getElementById("alert-message");
+        if (alertMsg) {
+            setTimeout(() => {
+                alertMsg.style.opacity = "0";
+                setTimeout(() => alertMsg.remove(), 500);
+            }, 4500); // 4.5s wait + 0.5s fade = 5s total
+        }
+    </script>
 
 </body>
 </html>

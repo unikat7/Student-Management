@@ -3,12 +3,34 @@
 <html>
 <head>
     <link rel="stylesheet" href="{% static 'css/registration/style.css' %}">
+    <style>
+        .alert {
+            background-color: #ffe0e0;
+            color: #c0392b;
+            border: 1px solid #e74c3c;
+            border-left: 4px solid #e74c3c;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            transition: opacity 0.5s ease;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="card">
     <h2>Student Registration</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}" id="alert-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -29,6 +51,16 @@
         <button type="submit" class="btn">Register</button>
     </form>
 </div>
+
+<script>
+    const alertMsg = document.getElementById("alert-message");
+    if (alertMsg) {
+        setTimeout(() => {
+            alertMsg.style.opacity = "0";
+            setTimeout(() => alertMsg.remove(), 500);
+        }, 4500); // 4.5s wait + 0.5s fade = 5s total
+    }
+</script>
 
 </body>
 </html>

@@ -26,8 +26,13 @@
     font-weight: 600;
 }
 
+/* PROFILE */
 .profile {
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
 }
 
 .profile img {
@@ -37,28 +42,55 @@
     cursor: pointer;
 }
 
+.profile-info p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* DROPDOWN */
 .dropdown {
+    display: none;
     position: absolute;
     right: 0;
-    top: 50px;
-    width: 160px;
-    background: white;
-    border-radius: 6px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    display: none;
+    top: calc(100% + 8px);   /* sits just below profile, 8px gap */
+    width: 180px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 6px 0;
+
+    /* Invisible bridge above dropdown so mouse can travel to it */
+    margin-top: 0;
+}
+
+/* Invisible hover bridge between profile and dropdown */
+.dropdown::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 10px;
 }
 
 .dropdown a {
     display: block;
-    padding: 10px;
-    color: black;
+    padding: 10px 16px;
+    color: #111827;
     text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
 }
 
 .dropdown a:hover {
-    background: #f3f4f6;
+    background-color: #f3f4f6;
+    color: #4f46e5;
 }
 
+/* Show on hover */
 .profile:hover .dropdown {
     display: block;
 }
@@ -66,7 +98,7 @@
 /* WRAPPER */
 .wrapper {
     display: flex;
-    margin-top: 65px; /* Ensures sidebar is below navbar */
+    margin-top: 65px;
 }
 
 /* SIDEBAR */
@@ -76,6 +108,8 @@
     height: calc(100vh - 65px);
     border-right: 1px solid #e5e7eb;
     padding: 20px;
+    position: sticky;
+    top: 65px;
 }
 
 .sidebar h2 {
@@ -89,14 +123,31 @@
 }
 
 .sidebar ul li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 12px 10px;
     border-radius: 6px;
     cursor: pointer;
+    font-size: 15px;
     transition: 0.2s ease;
 }
 
 .sidebar ul li:hover {
     background: #e5e7eb;
+}
+
+.sidebar ul li a {
+    color: #111827;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.sidebar ul li i {
+    font-size: 20px;
 }
 
 /* CONTENT */
@@ -106,32 +157,8 @@
 }
 
 /* RESPONSIVE */
-@media(max-width: 750px) {
+@media (max-width: 750px) {
     .sidebar {
         display: none;
     }
 }
-
-
-.sidebar ul li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 10px;
-    font-size: 15px;
-}
-
-.sidebar ul li a {
-    color: black;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.sidebar ul li i {
-    font-size: 20px;
-}
-
-
-

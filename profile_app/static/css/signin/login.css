@@ -125,3 +125,24 @@ body {
         padding: 25px 20px;
     }
 }
+
+
+
+
+
+.alert {
+    background-color: #ca1d1d;
+    color: #c0392b;
+    border: 1px solid #e74c3c;
+    border-left: 4px solid #e74c3c;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    animation: fadeOut 0.5s ease 4.5s forwards; /* starts fading at 4.5s */
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; visibility: hidden; }
+}

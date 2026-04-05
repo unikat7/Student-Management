@@ -4,39 +4,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GP Koirala Memorial College - Student Management</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>GP Koirala Memorial College</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f6ff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #dbeafe;
+            padding: 60px 50px;
+            text-align: center;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 4px 24px rgba(37, 99, 235, 0.08);
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            background: #2563eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+
+        .icon svg {
+            width: 30px;
+            height: 30px;
+            fill: #ffffff;
+        }
+
+        .college-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 6px;
+        }
+
+        .system-name {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+
+        .divider {
+            width: 48px;
+            height: 3px;
+            background: #2563eb;
+            border-radius: 2px;
+            margin: 0 auto 32px;
+        }
+
+        .welcome {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        .footer {
+            margin-top: 28px;
+            font-size: 11px;
+            color: #94a3b8;
+        }
+    </style>
 </head>
-<body class="h-screen w-screen font-sans">
+<body>
 
-    <!-- Background Image -->
-    <div class="relative h-screen w-screen">
-        <img src="{% static "images/GP_Koirala_Memorial_College_Cover.webp" %}" 
-             alt="GP Koirala Memorial College" 
-             class="absolute inset-0 w-full h-full object-cover">
+    <div class="card">
 
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-black bg-opacity-20 flex flex-col justify-center items-center text-center px-4">
-
-            <!-- College Name -->
-            <h1 class="text-white text-4xl md:text-6xl font-extrabold mb-6 drop-shadow-2xl">
-                GP Koirala Memorial College
-            </h1>
-            <p class="text-gray-100 text-lg md:text-2xl mb-8 drop-shadow-lg">
-                Student Management System
-            </p>
-
-            <!-- Buttons -->
-            <div class="flex flex-col md:flex-row gap-6">
-                <a href="{% url 'signin' %}" 
-                   class="px-10 py-4 bg-gradient-to-r from-green-400 to-green-600 
-                          hover:from-green-500 hover:to-green-700 text-white rounded-full 
-                          text-lg font-bold shadow-xl transform hover:scale-105 transition duration-300">
-                    SMS Login
-                </a>
-             
-            </div>
+        <div class="icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/>
+            </svg>
         </div>
+
+        <p class="college-name">GP Koirala Memorial College</p>
+        <p class="system-name">Student Management System</p>
+
+        <div class="divider"></div>
+
+        <p class="welcome">
+            Manage your academic records, attendance,<br>
+            and more — all in one place.
+        </p>
+
+        <a href="{% url 'signin' %}" class="btn">Login to Portal</a>
+
+        <p class="footer">© GP Koirala Memorial College, Sifal, Chabahil</p>
+
     </div>
 
 </body>

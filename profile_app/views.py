@@ -9,8 +9,9 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib import messages
+import re
 
-# Create your views here.
+
 
 def StudentRegistration(request):
     semesters = Semester.objects.all()
@@ -22,6 +23,28 @@ def StudentRegistration(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
         semester_id = request.POST.get("semester")
+
+       
+        password_regex = re.compile(
+            r'^(?=.*[a-z])'       
+            r'(?=.*[A-Z])'        
+            r'(?=.*\d)'            
+            r'(?=.*[@$!%*?&])'    
+            r'.{8,}$'              
+        )
+
+        if not password_regex.match(password):
+            messages.error(request,
+                "Password must be at least 8 characters and include "
+                "an uppercase letter, number, and special character (@$!%*?&)."
+            )
+            return redirect("sregister")
+        
+
+       
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists. Please choose a different one.")
+            return redirect("sregister")
 
         # Create User
         user = User.objects.create_user(
@@ -51,7 +74,6 @@ def StudentRegistration(request):
         "semesters": semesters
     })
 
-
 def TeacherRegistration(request):
     if request.method=="POST":
         data=request.POST
@@ -65,6 +87,21 @@ def TeacherRegistration(request):
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists. Please choose a different one.")
             return redirect("tregister")
+        password_regex = re.compile(
+            r'^(?=.*[a-z])'       
+            r'(?=.*[A-Z])'        
+            r'(?=.*\d)'            
+            r'(?=.*[@$!%*?&])'    
+            r'.{8,}$'              
+        )
+
+        if not password_regex.match(password):
+            messages.error(request,
+                "Password must be at least 8 characters and include "
+                "an uppercase letter, number, and special character (@$!%*?&)."
+            )
+            return redirect("sregister")
+        
 
         user=User.objects.create_user(username=username,first_name=firstname,last_name=lastname,password=password,email=email)
         st=Teacher.objects.create(user=user)
@@ -86,6 +123,9 @@ def SignIn(request):
 
 
         user=authenticate(username=username,password=password)
+        if user is None:
+            messages.error(request, "Invalid username or password")
+            return redirect("signin")
         if hasattr(user,"student"):
             login(request,user)
             return redirect('studentdashboard')
