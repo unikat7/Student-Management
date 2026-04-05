@@ -8,6 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.contrib import messages
 
 # Create your views here.
 
@@ -60,6 +61,10 @@ def TeacherRegistration(request):
        
         password=data["password"]
         email=data["email"]
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists. Please choose a different one.")
+            return redirect("tregister")
 
         user=User.objects.create_user(username=username,first_name=firstname,last_name=lastname,password=password,email=email)
         st=Teacher.objects.create(user=user)
