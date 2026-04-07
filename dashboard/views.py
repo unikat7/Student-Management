@@ -192,18 +192,34 @@ def ViewResults(request):
 
     course_marks_list = []
     completed = 0
+    total_marks = 0
 
     for c in courses:
         m = marks.filter(course=c).first()
         if m:
-            course_marks_list.append({'course_name': c.course_name, 'marks': m.marks, 'assigned': True})
+            bar_percent = round((m.marks / 60) * 100)
+            course_marks_list.append({
+                'course_name': c.course_name,
+                'marks': m.marks,
+                'bar_percent': bar_percent,
+                'assigned': True
+            })
             completed += 1
+            total_marks += m.marks
         else:
-            course_marks_list.append({'course_name': c.course_name, 'marks': 0, 'assigned': False})
+            course_marks_list.append({
+                'course_name': c.course_name,
+                'marks': 0,
+                'bar_percent': 0,
+                'assigned': False
+            })
 
     total = courses.count()
     pending = total - completed
     progress_percent = int((completed / total) * 100) if total > 0 else 0
+
+    avg = (total_marks / completed) if completed > 0 else 0
+    gpa = round((avg / 60) * 4.0, 2)
 
     return render(request, 'features/viewmarks.html', {
         'student': student,
@@ -212,4 +228,5 @@ def ViewResults(request):
         'completed_courses': completed,
         'pending_courses': pending,
         'progress_percent': progress_percent,
+        'gpa': gpa,
     })

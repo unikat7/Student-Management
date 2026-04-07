@@ -141,13 +141,13 @@ def SignIn(request):
 
 
 def ProfileUpdate(request):
-    if request.method=="POST" and request.FILES:
+    if request.method=="POST":
         data=request.POST
         username=data["username"]
         firstname=data["firstname"]
         lastname=data["lastname"]
         email=data["email"]
-        profileimage=request.FILES["profileimage"]
+        profileimage=request.FILES.get("profileimage")
 
         profile, created = Profile.objects.get_or_create(user=request.user)
         if profileimage:
